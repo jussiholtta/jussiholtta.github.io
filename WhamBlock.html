@@ -1,0 +1,71 @@
+<html>
+<head>
+  <style>
+    body {background-color: black;
+      color:#EEDDDD;
+      width: 80%;
+    }
+    a {
+      color: #EEDDEE;
+    }
+  </style>
+</head>
+<body>
+
+<iframe width="0" height="0" src="http://www.youtube.com/embed/E8gmARGvPlI?listType=user_uploads&list=NBA&loop=1&autoplay=1&rel=0&showinfo=0&controls=0&autohide=1" frameborder="0" allowfullscreen></iframe>
+<div>
+<h1>How to block all instances of "Wham! - Last Christmas" on Chrome with uBlock #Whamageddon </h1>
+<p>
+To survive #whamageddon you need to be craftier than Loki himself. To get started install <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en" target="_blank">ublock-origin</a></p>
+
+<h2>
+  WARNING: None of the below doesn't block misleadingly named copies of the video or song, but at least you'll be safe from accidentally clicking on something that plays it. The safest bet is to check that your computer is on mute when you're not actually listening to something.
+</h2>
+
+<p>In the dynamic filtering pane (<a href="https://github.com/gorhill/uBlock/wiki/Advanced-user-features" target="_blank">that is available only when you enable advanced settings</a>) can be toggled by clicking on <code>requests blocked</code> or <code>domains connected on any page</code>:</p>
+<p><img src="https://raw.githubusercontent.com/gorhill/uBlock/master/doc/img/df-qg-01.png" alt="figure 1"></p>
+<h3>Type-based rules</h3>
+<p>Type-based rules are used to filter specific types of request on a web page. There currently exists seven types of request which can be dynamically filtered. The most relevant ones for blocking craftier instances of Wham! are:</p>
+<ul>
+<li>
+<code>3p</code>: any request which 3rd-party to the web page</li>
+<li>
+<code>3p-script</code>: 3rd-party scripts, i.e. scripts which are pulled from a different domain name than that of the current web page</li>
+<li>
+<code>3p-frame</code>: 3rd-party frames, i.e. frames elements which are pulled from a different domain name than that of current web page</li>
+</ul>
+<p>These rules can apply everywhere, or be specific to a web site. For instance blocking 3rd-party frames is a very good habit security-wise: <code>* * 3p-frame block</code>. This rule translates into "globally block 3rd-party frames".</p>
+<p>Note that with type-based rules, the destination hostname is <strong>always</strong> <code>*</code>, meaning "from anywhere".</p>
+</div>
+
+<h3>Cosmetic filters</h3>
+<h4>Entity-based cosmetic filters</h4>
+<p>Filters which are to be applied to a specific <em>entity</em>. For example:</p>
+<pre><code>google.*###tads.c
+</code></pre>
+<p>An <em>entity</em> is defined as follow: a formal domain name with the Public Suffix part replaced by a wildcard.</p>
+<p>Examples: <code>google.*</code>  will apply to all similar Google domain names: <code>google.com</code>, <code>google.com.br</code>, <code>google.ca</code>, <code>google.co.uk</code>, etc. Another example: <code>facebook.*</code> will apply to all similar Facebook domain names: <code>facebook.com</code>, <code>facebook.net</code>.</p>
+<p>Since the base domain name is used to derive the name of the "entity", <code>google.evil.biz</code> would <strong>not</strong> match <code>google.*</code>.</p>
+<p>You could use the above to block all known urls of Wham! - Last Christmas, but it's safer to block all _content_ that mentions it. <b>WARNING: applying the below will block this page too!</b></p>
+<h4>Procedural cosmetic filters</h4>
+<p><code>:has(...)</code>, <code>:has-text(...)</code>, <code>:if(...)</code>, <code>:if-not(...)</code>, <code>:matches-css(...)</code>, <code>:matches-css-before(...)</code>, <code>:matches-css-after(...)</code>, <code>:xpath(...)</code>.</p>
+<p>subject:has-text(needle)</p>
+<ul>
+<li>Description: Select element <em>subject</em> if and only if the text <em>needle</em> is found inside the element <em>subject</em>.</li>
+<li>Chainable: Yes.</li>
+<li>
+<em>subject</em>: Can be a plain CSS selector, or a procedural cosmetic filter.</li>
+<li>
+<em>needle</em>: The literal text which must be found, or a literal regular expression.</li>
+<li>To block pages containing Last christmas use:
+<ul>
+<li><code>example.com##body &gt; div:last-of-type span:has-text(/^Last christmas/)</code></li>
+</ul>
+</li>
+</ul>
+</body>
+</html>
+<!--
+Bits and pieces taken from:
+https://github.com/gorhill/uBlock/wiki licenced under https://www.gnu.org/licenses/gpl-3.0.en.html
+-->
